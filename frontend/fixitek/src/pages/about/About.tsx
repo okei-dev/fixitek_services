@@ -29,12 +29,12 @@ const About = () => {
             <ul className="mt-60 mx-4 border-b-2 border-[var(--neutral--300)]">
                 {contactUs.map((contact, index) => (
                     <li key={index}>
-                        <div className="inline-flex items-center gap-2">
+                        <div className="flex items-center gap-2">
                             <img 
                                 src={contact.icon}
                                 alt={contact.subHead} 
-                                className="text-[var(--accent--primary-1)] size-6" />
-                            <h2 className="py-2 text-xl text-[var(--neutral--800)]">{contact.subHead}</h2>
+                                className="size-6" />
+                            <h2 className="py-2 text-2xl text-[var(--neutral--800)]">{contact.subHead}</h2>
                         </div>
                         <div className="inline-flex flex-col">
                             <p className="py-2 text-base text-[var(--neutral--800)] hover:text-[var(--accent--primary-1)]">{contact.info}</p>
