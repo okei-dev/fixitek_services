@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getServices } from "./serviceApi";
+import { getServicesByCategory } from "./serviceApi";
 import { GoArrowRight } from "react-icons/go";
 import { Link } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const ServiceList = () => {
     const [services, setServices] = useState<Service[]>([]);
 
     const fetchServiceList = async () => {
-        const data = await getServices();
+        const data = await getServicesByCategory();
         setServices(data.results)
     }
 
@@ -44,31 +44,31 @@ const ServiceList = () => {
         fetchServiceList()
     }, [])
 
-    
+
     return (
         <div className="mt-4">
-          <ul className="mx-4 ">
-            {services.map((service, id) => (
-                <li key={id}>
-                    <h2>{service.name}</h2>
-                    <p>{service.description}</p>
-                    <img src={service.photo} />
-                    <div>
-                       {service.tags.map((tag, id) => (
-                        <span key={id}>{tag.name}</span>
-                       ))}
-                       <div>
-                        <Link 
-                            to="/services"
-                            className="inline-flex btn-secondary-small items-center gap-2"
-                            >
-                                Learn more <GoArrowRight /></Link>
-                       </div>
-                    </div>
-                    
-                </li>
-            ))}
-          </ul>
+            <ul className="mx-4 ">
+                {services.map((service, id) => (
+                    <li key={id}>
+                        <h2>{service.name}</h2>
+                        <p>{service.description}</p>
+                        <img src={service.photo} />
+                        <div>
+                            {service.tags.map((tag, id) => (
+                                <span key={id}>{tag.name}</span>
+                            ))}
+                            <div>
+                                <Link
+                                    to="/services"
+                                    className="inline-flex btn-secondary-small items-center gap-2"
+                                >
+                                    Learn more <GoArrowRight /></Link>
+                            </div>
+                        </div>
+
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 }
