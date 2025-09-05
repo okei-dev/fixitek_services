@@ -7,6 +7,7 @@ import Dashboard from '@/pages/Dashboard'
 import NotFound from '@/pages/NotFound'
 import CartPage from '@/pages/CartPage'
 import Layout from '@/Layout'
+import ServiceList from '@/features/services/ServiceList'
 
 const isAuthenticated = () => !!localStorage.getItem('access')
 
@@ -25,6 +26,7 @@ const AppRoutes = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/categories/:categoryId/services' element={<ServiceList />} />
 
                 <Route
                     path='/dashboard'
