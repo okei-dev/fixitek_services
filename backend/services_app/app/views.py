@@ -90,6 +90,13 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 
+    @action(detail=True, methods=['get'], url_path='services')
+    def services(self, request, pk=None):
+        category = self.get_object()
+        services = category.services.all()
+        serializer = ServiceSerializer(services, many=True, context={'request': request})
+        return Response(serializer.data)
+
 
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, viewsets.GenericViewSet):
     http_method_names = ['post', 'get', 'delete']
