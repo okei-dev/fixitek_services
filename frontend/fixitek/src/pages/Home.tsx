@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import ServiceList, { Service } from '@/features/services/ServiceList'
 import { GoArrowRight } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 import ServiceCategories from '@/features/services/ServiceCategories'
