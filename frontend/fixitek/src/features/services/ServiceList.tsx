@@ -1,70 +1,57 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getServicesByCategory } from "./serviceApi";
 import { GoArrowRight } from "react-icons/go";
-import { Link } from "react-router-dom";
-
-type Category = {
-    id: number;
-    name: string;
-}
-
-type Tag = {
-    id: number;
-    name: string;
-}
-
-export type Service = {
-    id: number;
-    name: string;
-    category: Category;
-    tags: Tag[];
-
-    created_at: string;
-    updated_at: string;
-
-    price?: string;
-    estimated_time?: number;
-    description: string;
+import { Link, useParams } from "react-router-dom";
+import { Service } from "@/types/service";
 
 
-    photo?: string | null;
-}
-
-
-
-const ServiceList = () => {
+const ServiceList: React.FC = () => {
+    const { categoryId } = useParams<{ categoryId: string }>();
     const [services, setServices] = useState<Service[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const fetchServiceList = async () => {
-        const data = await getServicesByCategory();
-        setServices(data.results)
+        if (!categoryId) return;
+
+        const id = Number(categoryId);
+        if (isNaN(id)) return;
+
+        setLoading(true)
+
+        try {
+            const data = await getServicesByCategory(id);
+            setServices(data)
+        } catch (error) {
+            console.error('Failed to fetch services', error);
+
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
         fetchServiceList()
-    }, [])
+    }, [categoryId]);
 
+    if (loading) return <p>Loading services...</p>
 
     return (
-        <div className="mt-4">
+        <div className="mt-10">
             <ul className="mx-4 ">
-                {services.map((service, id) => (
-                    <li key={id}>
-                        <h2>{service.name}</h2>
-                        <p>{service.description}</p>
-                        <img src={service.photo} />
-                        <div>
-                            {service.tags.map((tag, id) => (
-                                <span key={id}>{tag.name}</span>
-                            ))}
-                            <div>
-                                <Link
-                                    to="/services"
-                                    className="inline-flex btn-secondary-small items-center gap-2"
-                                >
-                                    Learn more <GoArrowRight /></Link>
-                            </div>
-                        </div>
+                {services.map((service) => (
+                    <li
+                        key={service.id}
+                        className='bg-[var(--secondary--color-3)] mb-2'
+                    >
+                        <h2 className='p-2 text-2xl'>{service.name}</h2>
+                        <p className='p-2 text-base'>{service.description}</p>
+                        <Link 
+                            to={`/services/${service.id}/`}
+                            className='btn-primary'
+                            >
+                            Get a quote
+                            <GoArrowRight />
+                        </Link>
 
                     </li>
                 ))}
