@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { getServiceCategories } from './serviceApi'
-import { Category } from '@/types/service';
 import { Link } from 'react-router-dom';
 import { GoArrowRight } from 'react-icons/go';
 import SectionButton from '@/components/SectionButton';
+import { Category } from '@/types/category';
 
 const ServiceCategories = () => {
     const [categories, setCategories] = useState<Category[]>([]);
