@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useAsyncError } from "react-router-dom";
 import logo from "@/assets/img/fix_logo.svg";
 import { menus } from "./menuData";
 import { Cross as Hamburger } from "hamburger-react";
@@ -12,7 +12,9 @@ const Header = () => {
   const [itemCount, setItemCount] = useState<number>(0)
   const [isOpen, setOpen] = useState<boolean>(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
+  const [menuHeight, setMenHeight] = useState<number>(0);
 
+  const menuRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const orderItems = async () => {
@@ -29,10 +31,18 @@ const Header = () => {
     orderItems();
   }, [])
 
+  useEffect(() => {
+    if (isOpen && menuRef.current) {
+      setMenHeight(menuRef.current.scrollHeight);
+    } else {
+      setMenHeight(0);
+    }
+  }, [isOpen, isSubMenuOpen])
+
   return (
-    <header className="flow-root bg-[var(--neutral--100)]">
-      <nav className="relative flex justify-between items-center px-4 py-3">
-        <img src={logo} alt="Fixitek Logo" className="w-32" />
+    <header className="">
+      <nav className="flex justify-between items-center px-4 py-3">
+        <Link to="/"><img src="/img/fix_logo.svg" alt="Fixitek Logo" className="w-32" /></Link>
         <div className="flex items-center gap-2 text-[var(--neutral--800)]">
           <span>Cart{`(${itemCount})`}</span>
           <button
@@ -46,9 +56,17 @@ const Header = () => {
           </button>
         </div>
 
-        <ul className={`absolute left-0 top-28 right-0 lg:flex gap-6 text-neutral-700 font-medium
-          overflow-hidden transition-[max-height, opacity, padding] duration-300 ease-in-out
-            ${isOpen ? "max-h-100 p-4 opacity-100" : "max-h-0 p-0 opacity-0"} bg-[var(--neutral--100)] flex flex-col`}>
+        <ul
+          ref={menuRef}
+          style={{
+            maxHeight: isOpen ? `${menuHeight}px` : "0px",
+            opacity: isOpen ? 1 : 0,
+            padding: isOpen ? "1rem" : "0",
+            transition: "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out",
+            overflow: "hidden",
+          }}
+          className={`absolute top-28 left-0  right-0  lg:flex gap-6 text-neutral-700 font-medium
+           bg-[var(--neutral--100)] flex flex-col`}>
           {menus.map((menu, idx) => (
             <li key={idx}
               className={``}
@@ -86,16 +104,17 @@ const Header = () => {
               )}
             </li>
           ))}
-          <div className="mt-2 ">
-            <Link 
+          <div className="mt-2 pb-4 ">
+            <Link
               to="/about"
               className="btn-primary-small w-full inline-flex justify-center items-center gap-2"
-              >
+            >
               <button>Get a Quote </button>
               <GoArrowRight />
             </Link>
           </div>
         </ul>
+
       </nav>
     </header>
   );

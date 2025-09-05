@@ -13,3 +13,4 @@ export const getStoredCartId = (): string | null => {
 export const clearCartId = () => {
     localStorage.removeItem(CART_ID_KEY)
 }
+
