@@ -71,8 +71,6 @@ class ServiceViewSet(viewsets.ModelViewSet):
 
 
 
-
-
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
@@ -92,8 +90,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], url_path='services')
     def services(self, request, pk=None):
-        category = self.get_object()
-        services = category.services.all()
+        try:
+            category = self.get_object()
+        except Category.DoesNotExist:
+            return Response({ 'error': 'Category not found'}, status=404)
+        
+        services = Service.objects.filter(category=category)
         serializer = ServiceSerializer(services, many=True, context={'request': request})
         return Response(serializer.data)
 
