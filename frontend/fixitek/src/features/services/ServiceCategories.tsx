@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { getServiceCategories } from './serviceApi'
-import { ServiceCategory } from '@/types/service';
+import { Category } from '@/types/service';
 import { Link } from 'react-router-dom';
 import { GoArrowRight } from 'react-icons/go';
 import SectionButton from '@/components/SectionButton';
 
 const ServiceCategories = () => {
-    const [categories, setCategories] = useState<ServiceCategory[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(false);
 
 
