@@ -35,23 +35,23 @@ const ServiceCategories = () => {
             <SectionButton>Our Services</SectionButton>
             <ul>
                 {categories.map(cat => (
-                    <li key={cat.id} className='my-4 p-4 border rounded-3xl'>
-                        <div>
-                            {cat.photo_url ? (
-                                <img src={cat.photo_url} alt={cat.name} />
-                            ) : (
-                                <img src='./img/furniture.jpg' alt='furniture' />
-                            )}
+                    <li key={cat.id} className='m-4 text-center bg-[var(--neutral--100)] shadow-lg rounded-3xl overflow-hidden'>
+                        {cat.photo_url ? (
+                            <img src={cat.photo_url} alt={cat.name} className='w-full aspect-[4/3] object-cover' />
+                        ) : (
+                            <img src='./img/furniture.jpg' alt='furniture' className='w-full aspect-[4/3] object-cover' />
+                        )}
+                        <div className='p-4'>
+                            <h3 className='text-[var(--neutral--800)] hover:text-[var(--accent--primary-1)] font-bold'>{cat.name}</h3>
+                            <p className='text-sm'>{cat.description}</p>
+                            <Link
+                                to={`/categories/${cat.id}/services/`}
+                                className='flex justify-center items-center gap-2 text-sm text-[var(--secondary--color-2)] hover:text-[var(--accent--primary-1)] mt-2 p-3'
+                            >
+                                view Services
+                                <GoArrowRight />
+                            </Link>
                         </div>
-                        <h3 className='font-bold'>{cat.name}</h3>
-                        <p className='p-2 text-base'>{cat.description}</p>
-                        <Link
-                            to={`/categories/${cat.id}/services/`}
-                            className='flex justify-center items-center gap-2 text-[var(--neutral--800)] p-2'
-                        >
-                            view Services
-                            <GoArrowRight />
-                        </Link>
                     </li>
                 ))}
             </ul>
