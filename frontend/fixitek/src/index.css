@@ -162,20 +162,3 @@ body {
   background-repeat: no-repeat;
   background-size: contain;
 }
-
-.card {
-  border-radius: 20px;
-  border: 1px solid var(--neutral--300);
-  width: 100%;
-  text-decoration: none;
-  overflow: hidden;
-}
-
-.card.service-category-card {
-  display: flex;
-  background-color: var(--neutral--100);
-  box-shadow: 0 2px 8px 0 var(--general--shadow-02);
-  color: var(--neutral--600);
-  border-style: none;
-  height: 100%;
-}
