@@ -5,6 +5,7 @@ import ServiceCategories from '@/features/services/ServiceCategories'
 import About from './about/About'
 import Testimonial from '@/components/Testimonial'
 import QuoteCard from '@/components/QuoteCard'
+import HandymanCard from '@/components/HandymanCard'
 
 
 
@@ -37,9 +38,9 @@ const Home = () => {
           <div className="relative mt-8 mx-4 staff-line-svg">
                 <img src="/img/fixitek_handyman.png" alt="Fixitek staff" />
             </div>
-          <QuoteCard>
+          <HandymanCard>
             <div></div>
-          </QuoteCard>
+          </HandymanCard>
         </div>
       </section>
 
