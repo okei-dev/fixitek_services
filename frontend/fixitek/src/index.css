@@ -157,8 +157,16 @@ body {
   font-size: 14px;
 }
 
-.staff-line-svg {
-  background-image: url("/img/fixitek_line.svg");
+.staff-line-svg,
+.review {
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.staff-line-svg {
+  background-image: url("/img/fixitek_line.svg");
+}
+
+.review {
+  background-image: url("./img/accent-primary-line.svg");
 }
