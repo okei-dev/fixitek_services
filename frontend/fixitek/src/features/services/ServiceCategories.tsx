@@ -45,7 +45,7 @@ const ServiceCategories = () => {
                             ) : (
                                 <img src='./img/furniture.jpg' alt='furniture' className='w-full aspect-[4/3] object-cover' />
                             )}
-                            <div className='absolute -bottom-5 rounded-full border-2 border-white p-2 bg-[var(--accent--primary-1)]'>
+                            <div className='absolute -bottom-5 rounded-full border-3 border-white p-4 bg-[var(--accent--primary-1)]'>
                                 <CategoryIcon id={cat.id} />
                             </div>
                         </div>
@@ -69,18 +69,18 @@ const ServiceCategories = () => {
             </Button>
 
             <div className='mt-30 flex flex-col p-4 rounded-2xl bg-[var(--secondary--color-1)] staff-line-svg'>
-                <h2 className='p-4 text-3xl text-[var(--neutral--100)]'>Get a budget today for your 
+                <h2 className='mt-4 p-4 text-3xl text-[var(--neutral--100)]'>Get a budget today for your 
                     <span className='text-[var(--accent--primary-1)]'> new project</span>!</h2>
                     <button className='my-4 btn-primary'>
                         Get a quote
                         <GoArrowRight />
                     </button>
-                    <div className='p-4 text-[var(--neutral--100)]'>
+                    <div className='m-2 p-4 text-[var(--neutral--100)]'>
                         <p className='text-sm'>Call us</p>
                         <p className='font-semibold'>(+1) 240 640-3500</p>
                     </div>
 
-                    <div className='mb-2 p-4 text-[var(--neutral--100)]'>
+                    <div className='m-2 p-4 text-[var(--neutral--100)]'>
                         <p className='text-sm'>Email us</p>
                         <p className='font-semibold'>contact@fixitek.com</p>
                     </div>
