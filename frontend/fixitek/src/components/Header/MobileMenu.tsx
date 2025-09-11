@@ -1,6 +1,6 @@
 import { FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { menus } from "./menuData";
+import { menuData } from "./menuData";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const MobileMenu = ({ isOpen, isClosing, onClose }: MobileMenuProps) => {
       </div>
 
       <ul className="flex flex-col gap-4 p-4 text-neutral-700 font-medium">
-        {menus.map((menu, idx) => (
+        {menuData.map((menu, idx) => (
           <li key={idx}>
             <Link
               to={menu.url}

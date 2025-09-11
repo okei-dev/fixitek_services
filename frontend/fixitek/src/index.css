@@ -120,7 +120,9 @@ body {
     text-align: center;
     transform-style: preserve-3d;
     border-radius: 12px;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
     padding: 20px;
     font-weight: 700;
     line-height: 1.111em;
@@ -155,12 +157,16 @@ body {
   font-size: 14px;
 }
 
-.staff-line-svg {
-  background-image: url("/img/fixitek_line.svg");
+.staff-line-svg,
+.review {
   background-repeat: no-repeat;
   background-size: contain;
 }
 
-/* .menu {
-    display: flex;
-} */
+.staff-line-svg {
+  background-image: url("/img/fixitek_line.svg");
+}
+
+.review {
+  background-image: url("./img/accent-primary-line.svg");
+}

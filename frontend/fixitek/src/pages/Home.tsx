@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import ServiceList, { Service } from '@/features/services/ServiceList'
 import { GoArrowRight } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 import ServiceCategories from '@/features/services/ServiceCategories'
 import About from './about/About'
+import Testimonial from '@/components/Testimonial'
+import QuoteCard from '@/components/QuoteCard'
+import HandymanCard from '@/components/HandymanCard'
 
 
 
@@ -34,21 +36,11 @@ const Home = () => {
             </Link>
           </div>
           <div className="relative mt-8 mx-4 staff-line-svg">
-            <img src="/img/fixitek_handyman.png" alt="Fixitek staff" />
-            <div>
-              {/*What is here? */}
+                <img src="/img/fixitek_handyman.png" alt="Fixitek staff" />
             </div>
-          </div>
-          <div className="absolute -mt-10 mx-4 flex flex-col justify-center py-10 px-8 rounded-2xl bg-[var(--accent--primary-1)]">
-            <h2 className="text-2xl text-center p-3 text-[var(--neutral--800)]">Contact our expert handyman today!</h2>
-            <Link
-              to="/about"
-              className="btn-tertiary-small inline-flex justify-center items-center gap-2"
-            >
-              <p>Get a quote</p>
-              <GoArrowRight />
-            </Link>
-          </div>
+          <HandymanCard>
+            <div></div>
+          </HandymanCard>
         </div>
       </section>
 
@@ -73,6 +65,8 @@ const Home = () => {
       </div>
 
       <ServiceCategories />
+
+      <Testimonial />
 
     </main>
   )

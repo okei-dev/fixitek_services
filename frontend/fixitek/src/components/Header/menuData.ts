@@ -1,4 +1,4 @@
-export const menus = [
+export const menuData = [
   { name: "Home", url: "/" },
   { name: "About", url: "/About" },
   { name: "Services", url: "/Services" },

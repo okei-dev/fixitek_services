@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useAsyncError } from "react-router-dom";
 import logo from "@/assets/img/fix_logo.svg";
-import { menus } from "./menuData";
+import { menuData } from "./menuData";
 import { Cross as Hamburger } from "hamburger-react";
 import { SlArrowDown } from "react-icons/sl";
 import { getOrderItemCount } from "@/features/order/orderApi";
@@ -65,9 +65,9 @@ const Header = () => {
             transition: "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out",
             overflow: "hidden",
           }}
-          className={`absolute top-28 left-0  right-0  lg:flex gap-6 text-neutral-700 font-medium
+          className={`absolute top-28 left-0 right-0  lg:flex gap-6 text-neutral-700 font-medium z-50
            bg-[var(--neutral--100)] flex flex-col`}>
-          {menus.map((menu, idx) => (
+          {menuData.map((menu, idx) => (
             <li key={idx}
               className={``}
             >
