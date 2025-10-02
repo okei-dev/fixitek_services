@@ -77,6 +77,16 @@ Frontend runs at: **http://localhost:5173** (Vite default)
 3. User can add/remove services from the cart.
 4. Dashboard updates with the latest order info.
 
+| Action      | URL                          | Method |
+| ----------- | ---------------------------- | ------ |
+| Create Cart | `/cart/create/`              | POST   |
+| Get Cart    | `/cart/{cart_id}/`           | GET    |
+| Add Item    | `/cart/{cart_id}/items/`     | POST   |
+| Update Item | `/cart/{cart_id}/items/:id/` | PATCH  |
+| Delete Item | `/cart/{cart_id}/items/:id/` | DELETE |
+| Clear Cart  | `/cart/{cart_id}/clear/`     | DELETE |
+
+
 ---
 
 ## 📡 API Endpoints (Sample)
