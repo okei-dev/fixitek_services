@@ -9,7 +9,7 @@ export const useMenuToggle = () => {
 
     useEffect(() => {
         if (isOpen && menuRef.current) {
-            setMenuHeight(menuRef.current.scrollHeight);
+            setMenuHeight(menuRef.current.scrollHeight + 100);
         } else {
             setMenuHeight(0);
         }
