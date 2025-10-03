@@ -2,23 +2,38 @@ from django.db.models import Sum
 from django.db import transaction
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Cart, CartItem, Category, Customer, OrderItem, Service, Order
+from user.serializers import UserSerializer
+from .models import Cart, CartItem, Category, Customer, OrderItem, Service, Order, ServiceImage, Tag
 from .signals import order_created
 
 
 class CustomerSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
+    user = UserSerializer()
 
     class Meta:
         model = Customer
         fields = ['id', 'user_id', 'phone', 'user']
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name']
+
+
+class ServiceImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceImage
+        fields = ['id', 'image']
+
 
 class ServiceSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True)
+    images = ServiceImageSerializer(many=True)
     class Meta:
         model = Service
-        fields = ['id', 'name', 'category', 'description', 'tags', 'price', 'estimated_time', 'photo']
+        fields = ['id', 'name', 'category', 'description', 'tags', 'price', 'estimated_time', 'images']
 
 
 class SimpleServiceSerializer(serializers.ModelSerializer):
@@ -27,12 +42,10 @@ class SimpleServiceSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'price']
 
 
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'description', 'photo_url']
-
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -47,7 +60,6 @@ class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['id', 'service', 'quantity', 'total_price']
-
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -111,6 +123,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
+    customer = CustomerSerializer()
 
     class Meta:
         model = Order
@@ -146,26 +159,44 @@ class CreateOrderSerializer(serializers.Serializer):
 
     def save(self, **kwargs):
         with transaction.atomic():
+            request = self.context['request']
+            customer = Customer.objects.get(user=request.user)
             cart_id = self.validated_data['cart_id']
-            customer = self.context['customer']
 
-            order = Order.objects.create(customer=customer)
+            order = Order.objects.create(
+                customer=customer,
+                status='PENDING',
+                )
 
             cart_items = CartItem.objects\
                 .select_related('service')\
                  .filter(cart_id=cart_id)
             
-            order_items = [
-                OrderItem(
+            order_items = []
+
+            total_price = 0
+
+            for item in cart_items:
+                if item.service.price is None:
+                    raise serializers.ValidationError(f'Service "{item.service.name}" has no price assigned.')
+                
+                total_price += item.service.price * item.quantity
+
+                order_items.append(
+                    OrderItem(
                     order=order,
                     service=item.service,
                     quantity=item.quantity,
                     price=item.service.price,
-                ) for item in cart_items
-            ]
+                ) 
+                )
 
             OrderItem.objects.bulk_create(order_items)
 
+            order.total_price = total_price
+            order.save()
+
+            CartItem.objects.filter(cart_id=cart_id).delete()
             Cart.objects.filter(pk=cart_id).delete()
 
             order_created.send_robust(self.__class__, order=order)

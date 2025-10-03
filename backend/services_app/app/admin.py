@@ -21,15 +21,12 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(models.Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ["name", "price", "category", "estimated_time", "photo_preview"]
+    list_display = ["name", "price", "category", "estimated_time"]
     list_filter = ["category", "tags"]
     search_fields = ["name", "tags" ]
-    readonly_fields = ["photo_preview"]
 
-    def photo_preview(self, obj):
-        if obj.photo:
-            return format_html('<img src="{}" width="100" style="object-fit:cover; border: 1px solid #ccc;" />', obj.photo.url)
-        return "No photo"
-    
-    photo_preview.short_description = "Preview"
+
+@admin.register(models.ServiceImage)
+class ServiceImage(admin.ModelAdmin):
+    list_display = ["image", "is_primary"]
 
