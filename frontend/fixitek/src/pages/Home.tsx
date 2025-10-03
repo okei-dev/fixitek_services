@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import ServiceCategories from '@/features/services/ServiceCategories'
 import About from './about/About'
 import Testimonial from '@/components/Testimonial'
-import QuoteCard from '@/components/QuoteCard'
 import HandymanCard from '@/components/HandymanCard'
 
 
@@ -44,8 +43,6 @@ const Home = () => {
         </div>
       </section>
 
-
-      {/*About us */}
       <About />
 
       <div className="mx-4">
