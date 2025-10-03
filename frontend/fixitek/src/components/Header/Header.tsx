@@ -40,7 +40,7 @@ const Header = () => {
               transition: "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out",
               overflow: "hidden",
             }}
-            className={`absolute top-28 left-0, right-0 lg:flex gap-6 text-neutral-700 z-50 bg-[var(--neutral--100)] flex flex-col`}
+            className={`absolute top-28 left-0 right-0 lg:flex gap-6 text-neutral-700 z-50 bg-[var(--neutral--100)] flex flex-col`}
             >
               <MenuItems
                 isSubMenuOpen={isSubMenuOpen}
