@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
 @font-face {
-    font-family: "THICCCBOI";
-    src: url("https://db.onlinewebfonts.com/c/74065c19f82d6a5933f924aea6d037a7?family=THICCCBOI");
+  font-family: "THICCCBOI";
+  src: url("https://db.onlinewebfonts.com/t/74065c19f82d6a5933f924aea6d037a7.woff2") format("woff2"),
+       url("https://db.onlinewebfonts.com/t/74065c19f82d6a5933f924aea6d037a7.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
+
 
 
 html {

@@ -1,24 +1,24 @@
+import React from 'react'
 import Home from '@/pages/Home'
 import Login from '@/features/auth/Login'
 import Register from '@/features/auth/Register'
-import React, { ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Dashboard from '@/pages/Dashboard'
 import NotFound from '@/pages/NotFound'
 import CartPage from '@/pages/CartPage'
 import Layout from '@/Layout'
-import ServiceList from '@/features/services/ServiceList'
+import ServiceDetail from '@/features/services/ServiceDetail'
+import ServiceCategories from '@/features/services/ServiceCategories'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
-const isAuthenticated = () => !!localStorage.getItem('access')
 
-const PrivateRoute = ({ children }: { children: ReactNode }) => {
-    return isAuthenticated() ? children : <Navigate to='/login' replace />
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+    const { isAuthenticated } = useAuth();
+    return isAuthenticated ? children : <Navigate to='/login' replace />
 }
+
+
 const AppRoutes = () => {
-
-    const AppRoutes = () => {
-
-    }
 
     return (
         <Routes>
@@ -26,7 +26,8 @@ const AppRoutes = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
-                <Route path='/categories/:categoryId/services' element={<ServiceList />} />
+                <Route path='/categories/:categoryId/services' element={<ServiceCategories />} />
+                <Route path='/categories/:categoryId/services/:serviceId' element={<ServiceDetail />} />
 
                 <Route
                     path='/dashboard'

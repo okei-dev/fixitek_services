@@ -8,17 +8,17 @@ const WhyUs = () => {
 
     const services = [
         {
-            icon: './flash.png',
+            icon: './img/flash.png',
             subhead: 'Fast & Reliable',
             desc: 'We respond quickly and get the job done right—on time, every time.'
         },
         {
-            icon: './tools.png',
+            icon: './img/tools.png',
             subhead: 'Expert Team',
             desc: 'Our in-house professionals bring years of hands-on experience to deliver top-quality services.'
         },
         {
-            icon: './smile.png',
+            icon: './img/smile.png',
             subhead: 'Customer-First Approach',
             desc: 'Your satisfaction is our priority, and we go the extra mile to exceed expectations.'
         }

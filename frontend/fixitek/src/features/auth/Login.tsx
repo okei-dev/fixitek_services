@@ -1,92 +1,67 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { api } from '@/lib/api'
+import React, { useState } from "react";
+import ErrorDisplay from "@/components/ErrorDisplay";
+import InputField from "@/components/InputField";
+import Button from "@/components/Button";
+import { useAuth } from "./hooks/useAuth";
 
-
-interface LoginData {
-  username: string;
-  password: string;
-
-}
 
 const Login = () => {
-  const navigate = useNavigate()
+  const { loading, error, login } = useAuth();
 
-  const [form, setForm] = useState<LoginData>({ username: '', password: '' })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+  });
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    try {
-      const response = await api.post('/auth/jwt/create/', form) 
-
-      const { access, refresh } = response.data
-      localStorage.setItem('access', access)
-      localStorage.setItem('refresh', refresh)
-
-      navigate('/dashboard') // Redirect after login
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed')
-    } finally {
-      setLoading(false)
-    }
+    e.preventDefault();
+    await login(form);
   }
+
+  const fields = [
+    { name: 'username', label: 'Username', type: 'text' },
+    { name: 'password', label: 'Password', type: 'password' },
+  ];
+
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow">
       <h1 className="text-2xl font-semibold mb-6 text-center">Login to your account</h1>
 
-      {error && <p className="mb-4 text-red-600">{error}</p>}
+      {error && <ErrorDisplay message={error} />}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="username" className="block mb-1 font-medium">
-            Username
-          </label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            value={form.username}
+        {fields.map(({ name, label, type }) => (
+          <InputField
+            key={name}
+            id={name}
+            name={name}
+            label={label}
+            type={type}
+            value={form[name as keyof typeof form]}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
           />
-        </div>
+        ))}
 
-        <div>
-          <label htmlFor="password" className="block mb-1 font-medium">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-400"
-          />
-        </div>
-
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="w-full"
         >
           {loading ? 'Logging in...' : 'Login'}
-        </button>
+        </Button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+
+export default Login;

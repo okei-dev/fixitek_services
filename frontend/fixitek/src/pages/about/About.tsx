@@ -12,13 +12,13 @@ import SectionButton from '@/components/SectionButton'
 const About = () => {
     const contactUs = [
         {
-            icon: './comment.png',
+            icon: './img/comment.png',
             subHead: 'Contact us',
             info: 'Email: contact@fixitek.com',
             extra: '(240) 640-3500'
         },
         {
-            icon: './location.png',
+            icon: './img/location.png',
             subHead: 'Our Location',
             info: '9505 Hobart Street Springdale, MD 20774',
             extra: ''
@@ -30,9 +30,9 @@ const About = () => {
                 {contactUs.map((contact, index) => (
                     <li key={index}>
                         <div className="flex items-center gap-2">
-                            <img 
+                            <img
                                 src={contact.icon}
-                                alt={contact.subHead} 
+                                alt={contact.subHead}
                                 className="size-6" />
                             <h2 className="py-2 text-2xl text-[var(--neutral--800)]">{contact.subHead}</h2>
                         </div>
