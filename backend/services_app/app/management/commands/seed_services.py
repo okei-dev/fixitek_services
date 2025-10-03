@@ -1,122 +1,104 @@
-import random
 from django.core.management.base import BaseCommand
-from django.core.files import File
-from pathlib import Path
 from app.models import Category, Service, Tag
+from decimal import Decimal
 
 class Command(BaseCommand):
-    help = "Seed services with categories, tags, price, time, and optional photos"
+    help = "Seeds services data into the database"
 
     def handle(self, *args, **kwargs):
-        data = {
-            "Assembly & Installation": [
-                "Bed Assembly", "Chair Assembly", "Couch Assembly", "Coffee Table Assembly",
-                "Table Assembly", "Dinning Set Assembly", "Office Furniture Assembly",
-                "Office Chair Assembly", "Executive Desk Assembly", "Makeup Vanity Desk Assembly",
-                "Dresser Assembly", "Nightstand Assembly", "Bookcase Assembly", "TV Stand Assembly",
-                "Entertainment Center Assembly", "Baby Crib Assembly", "Murphy Bed Assembly & Installation",
-                "Wine Bar Cabinet Assembly", "Motorized Table Assembly", "Closet Installation",
-                "Outdoor Furniture Assembly", "Patio Furniture Set Assembly", "Commercial Patio Heater Assembly",
-                "Cantilever Patio Umbrella Assembly", "Swing Daybed Installation", "Sleeping Hammock Installation",
-                "Hammock Bed Assembly", "Motorized Awning Installation", "Metal Shed Assembly & Installation",
-                "Pool Table Assembly", "Ping Pong Table Assembly", "Trampoline Assembly and Installation Service",
-                "Basketball Hoop Installation Service", "Swing Set Assembly and Installation Service",
-                "Playset Assembly & Installation Service", "Home Gym Assembly", "Treadmill Assembly",
-                "Exercise Bike Assembly", "Elliptical Assembly", "Stair Climber Assembly", "Weight Bench Assembly",
-                "Dumbbell Rack Assembly", "Wall Mounted Rack", "Refrigerator Installation Service",
-                "Dish Washer Installation", "Stackable Washer / Dryer Installation", "Microwave Installation",
-                "Window AC Unit Installation", "Stove Installation", "Kitchen Hood Installation Service",
-                "Oven Installation Service", "Trash Compactor Installation Service"
-            ],
-            "Wall & Ceiling Mounting": [
-                "Artwork Installation Service", "Curtain and Drapes Installation Service",
-                "Blind Installation Service", "Coat Rack Installation Service", "Mirror Hanging Service",
-                "Board Installation", "Overhead Garage Rack Assembly & Installation",
-                "Wine Rack Installation", "Clock Installation", "Bicycle Rack Installation",
-                "Banister Installation", "Shelf Mounting & Installation", "TV Mount Installation",
-                "Exhaust Fan Installation", "Closet Shelving", "Cat Playground Run Installation"
-            ],
-            "Smart Home & Security": [
-                "Video Doorbell Camera Installation", "Security Camera Installation",
-                "Door Lock Installation", "Thermostat Installation"
-            ],
-            "Plumbing Services": [
-                "Faucet Installation", "Shutoff Valve Replacement", "Shower Cartridge Installation",
-                "Toilet Installation", "Garbage Disposal Installation", "Shower Head Installation",
-                "Shower Drain Unclog"
-            ],
-            "Home Maintenance": [
-                "Bathroom Caulking", "Painting", "Drywall Repairs", "Deck Staining"
-            ],
-            "Safety & Babyproofing": [
-                "Baby Gate Installation Service (Stair Barrier)"
-            ],
-        }
+        categories_data = [
+            ("Furniture Assembly", "Assembly of various furniture items"),
+            ("Outdoor Furniture Assembly", "Assembly of outdoor furniture like patio sets"),
+            ("Home Security Installation", "Installation of home security devices"),
+            ("Wall Hanging & Installations", "Installation of various wall fixtures"),
+            ("Plumbing", "Plumbing services such as faucet and toilet installation"),
+            ("Appliance Installation", "Installation of household appliances"),
+            ("Playground Equipment Installation", "Assembly and installation of playground equipment"),
+            ("Light Fixture Installation", "Installation of various lighting fixtures"),
+            ("Maintenance Services", "General home maintenance services"),
+            ("Gazebo/Pergola Installation", "Installation of outdoor gazebos and pergolas"),
+            ("TV Mounting", "TV Mounting services")
+        ]
 
+        categories = {}
+        for category_name, category_desc in categories_data:
+            category, created = Category.objects.get_or_create(name=category_name, description=category_desc)
+            categories[category_name] = category
+            if created:
+                self.stdout.write(self.style.SUCCESS(f'Created category: {category_name}'))
+            else:
+                self.stdout.write(self.style.SUCCESS(f'Category {category_name} already exists'))
 
-        keyword_tags = {
-            "bed": "bedroom",
-            "baby": "babyproofing",
-            "desk": "office",
-            "office": "office",
-            "gym": "fitness",
-            "bike": "fitness",
-            "mirror": "decor",
-            "tv": "electronics",
-            "mount": "mounting",
-            "outdoor": "outdoor",
-            "patio": "outdoor",
-            "shed": "outdoor",
-            "swing": "playground",
-            "playset": "playground",
-            "trampoline": "playground",
-            "basketball": "playground",
-            "awning": "outdoor",
-            "camera": "security",
-            "lock": "security",
-            "doorbell": "security",
-            "thermostat": "smart",
-            "shower": "plumbing",
-            "toilet": "plumbing",
-            "faucet": "plumbing",
-            "microwave": "appliance",
-            "oven": "appliance",
-            "stove": "appliance",
-            "refrigerator": "appliance",
-            "washer": "appliance",
-            "dryer": "appliance",
-            "rack": "storage",
-            "shelving": "storage",
-            "painting": "maintenance",
-            "caulking": "maintenance",
-            "repair": "maintenance",
-            "staining": "maintenance",
-        }
+        tags_data = ["Quick Service", "Luxury", "Standard", "Installation", "Assembly", "Maintenance"]
+        tags = {}
+        for tag_name in tags_data:
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            tags[tag_name] = tag
+            if created:
+                self.stdout.write(self.style.SUCCESS(f'Created tag: {tag_name}'))
+            else:
+                self.stdout.write(self.style.SUCCESS(f'Tag {tag_name} already exists'))
 
-        placeholder_path = Path("app/service_photos/placeholder.jpg") 
+        services_data = [
+            ("Bed Assembly", "Furniture Assembly", Decimal("49.99"), 60, ["Assembly"]),
+            ("Chair Assembly", "Furniture Assembly", Decimal("39.99"), 45, ["Assembly"]),
+            ("Office Furniture Assembly", "Furniture Assembly", Decimal("69.99"), 90, ["Assembly"]),
+            ("Murphy Bed Assembly & Installation service", "Furniture Assembly", Decimal("199.99"), 120, ["Assembly", "Installation"]),
+            ("Table Assembly", "Furniture Assembly", Decimal("59.99"), 50, ["Assembly"]),
+            ("Coffee Table", "Furniture Assembly", Decimal("39.99"), 30, ["Assembly"]),
+            ("Couch Assembly", "Furniture Assembly", Decimal("79.99"), 90, ["Assembly"]),
+            ("Dinning set Assembly", "Furniture Assembly", Decimal("149.99"), 120, ["Assembly"]),
+            ("Bookcase Assembly", "Furniture Assembly", Decimal("59.99"), 60, ["Assembly"]),
+            ("TV Stand Assembly", "Furniture Assembly", Decimal("49.99"), 45, ["Assembly"]),
+            ("Entertainment Center Assembly Service", "Furniture Assembly", Decimal("199.99"), 180, ["Assembly"]),
+            ("Pool Table Assembly", "Furniture Assembly", Decimal("299.99"), 150, ["Assembly"]),
+            ("Closet Installation", "Furniture Assembly", Decimal("89.99"), 120, ["Installation"]),
+            ("Dresser Assembly", "Furniture Assembly", Decimal("59.99"), 60, ["Assembly"]),
+            ("Baby Crib Assembly", "Furniture Assembly", Decimal("69.99"), 60, ["Assembly"]),
+            ("Motorized table assembly", "Furniture Assembly", Decimal("129.99"), 90, ["Assembly"]),
+            ("Executive Desk", "Furniture Assembly", Decimal("199.99"), 120, ["Assembly"]),
+            ("Wine Bar cabinet", "Furniture Assembly", Decimal("149.99"), 90, ["Assembly"]),
+            ("Nightstand Assembly", "Furniture Assembly", Decimal("39.99"), 30, ["Assembly"]),
+            ("Office Chair assembly", "Furniture Assembly", Decimal("39.99"), 45, ["Assembly"]),
+            ("Makeup vanity Desk Assembly", "Furniture Assembly", Decimal("79.99"), 60, ["Assembly"]),
+            ("Hamock Bed Assembly", "Furniture Assembly", Decimal("99.99"), 90, ["Assembly"]),
+            
+            ("Outdoor Furniture Assembly", "Outdoor Furniture Assembly", Decimal("79.99"), 60, ["Assembly"]),
+            ("Metal Shed Assembly & Installation", "Outdoor Furniture Assembly", Decimal("199.99"), 180, ["Assembly", "Installation"]),
+            ("Commercial Patio Heater Assembly", "Outdoor Furniture Assembly", Decimal("129.99"), 90, ["Assembly"]),
+            ("Patio furniture Set Assembly", "Outdoor Furniture Assembly", Decimal("159.99"), 120, ["Assembly"]),
+            ("Cantilever Patio Umbrella Assembly", "Outdoor Furniture Assembly", Decimal("89.99"), 60, ["Assembly"]),
+            ("Motorized Awning Installation Service", "Outdoor Furniture Assembly", Decimal("299.99"), 180, ["Installation"]),
+            ("Ping pong Table Assembly", "Outdoor Furniture Assembly", Decimal("99.99"), 90, ["Assembly"]),
+            ("Swing daybed Installation", "Outdoor Furniture Assembly", Decimal("149.99"), 120, ["Installation"]),
+            ("Sleeping Hamock Installation", "Outdoor Furniture Assembly", Decimal("79.99"), 60, ["Installation"]),
+            ("Grill Assembly Service", "Outdoor Furniture Assembly", Decimal("79.99"), 60, ["Assembly"]),
+            
+            ("Fitness equipment assembly", "Appliance Installation", Decimal("129.99"), 120, ["Assembly"]),
+            ("Home Gym Assembly", "Appliance Installation", Decimal("299.99"), 180, ["Assembly"]),
+            ("Treadmill Assembly", "Appliance Installation", Decimal("149.99"), 90, ["Assembly"]),
+            ("Exercise Bike assembly", "Appliance Installation", Decimal("79.99"), 60, ["Assembly"]),
+            ("Elliptical Assembly", "Appliance Installation", Decimal("129.99"), 120, ["Assembly"]),
+            ("Stair Climber Assembly", "Appliance Installation", Decimal("149.99"), 120, ["Assembly"]),
+            ("Dumbbell Rack Assembly", "Appliance Installation", Decimal("49.99"), 60, ["Assembly"]),
+            ("Weight Bench Assembly", "Appliance Installation", Decimal("79.99"), 90, ["Assembly"]),
+            ("Fitness Mirrow Installation", "Appliance Installation", Decimal("99.99"), 60, ["Installation"]),
+            ("Wall Mounted rack", "Appliance Installation", Decimal("59.99"), 45, ["Installation"]),
+            
+        ]
 
-        def get_tags(name):
-            lowered = name.lower()
-            return {tag for keyword, tag in keyword_tags.items() if keyword in lowered}
+        for service_name, category_name, price, estimated_time, tags_list in services_data:
+            category = categories[category_name]
+            service = Service.objects.create(
+                name=service_name,
+                category=category,
+                price=price,
+                estimated_time=estimated_time,
+                description=f"Professional {service_name.lower()} service."
+            )
+            
+            for tag_name in tags_list:
+                tag = tags[tag_name]
+                service.tags.add(tag)
 
-        for category_name, services in data.items():
-            category, _ = Category.objects.get_or_create(name=category_name)
-
-            for service_name in services:
-                service, created = Service.objects.get_or_create(name=service_name, category=category)
-
-                service.price = round(random.uniform(49.99, 299.99), 2)
-                service.estimated_time = random.choice([30, 60, 90, 120])
-                service.description = f"This is a sample description for {service_name}."
-
-                if placeholder_path.exists():
-                    with open(placeholder_path, 'rb') as image_file:
-                        service.photo.save(f"{service_name.replace(' ', '_')}.jpg", File(image_file), save=False)
-
-                service.save()
-
-                for tag_name in get_tags(service_name):
-                    tag, _ = Tag.objects.get_or_create(name=tag_name)
-                    service.tags.add(tag)
-
-        self.stdout.write(self.style.SUCCESS("✅ Services seeded with categories, tags, and mock data."))
+            self.stdout.write(self.style.SUCCESS(f'Successfully created service: {service_name}'))

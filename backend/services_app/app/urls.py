@@ -10,12 +10,14 @@ from .views import (
     CustomerViewSet, 
     OrderItemViewSet, 
     ServiceViewSet, 
-    OrderViewSet
+    OrderViewSet,
+    TagViewSet
     )
 
 
 router = DefaultRouter()
 router.register(r'customers', CustomerViewSet)
+router.register(r'tags', TagViewSet, basename='tag')
 router.register(r'services', ServiceViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'carts', CartViewSet, basename='cart')

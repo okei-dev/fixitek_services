@@ -12,9 +12,9 @@ from rest_framework.response import Response
 from datetime import timedelta
 from django.utils.timezone import now
 from app.pagination import DefaultPagination
-from .models import Cart, CartItem, Category, Customer, OrderItem, Service, Order
+from .models import Cart, CartItem, Category, Customer, OrderItem, Service, Order, Tag
 from .permissions import ViewCustomerHistoryPermission
-from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CategorySerializer, CreateOrderSerializer, CustomerSerializer, OrderItemSerializer, ServiceSerializer, OrderSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
+from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CategorySerializer, CreateOrderSerializer, CustomerSerializer, OrderItemSerializer, ServiceSerializer, OrderSerializer, TagSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
 
 
     
@@ -45,6 +45,12 @@ class CustomerViewSet(viewsets.ModelViewSet):
 
 
 
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+
+
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
@@ -62,12 +68,6 @@ class ServiceViewSet(viewsets.ModelViewSet):
         if Service.objects.filter(service_id=kwargs['pk']).count() > 0:
             return Response({'error':'Cannot be deleted it is associated with an order'}, status=status.HTTP_405_METHOD_NOT_ALLOWED) 
         return super().destroy(request, *args, **kwargs)
-    
-
-    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
-    def total_services(self, request):
-        total = Service.objects.count()
-        return Response({'total_services': total})
 
 
 
@@ -99,6 +99,19 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer = ServiceSerializer(services, many=True, context={'request': request})
         return Response(serializer.data)
 
+
+    @action(detail=True, methods=['get'], url_path='services/(?P<service_pk>[^/.]+)')
+    def service_details(self, request, pk=None, service_pk=None):
+        try:
+            category = self.get_object()
+            service = category.services.get(pk=service_pk)
+        except Service.DoesNotExist:
+            return Response({ 'detail': 'Service not found in the category'}, 
+                            status=status.HTTP_404_NOT_FOUND
+                            )
+        serializer = ServiceSerializer(service)
+        return Response(serializer.data)
+    
 
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, viewsets.GenericViewSet):
     http_method_names = ['post', 'get', 'delete']
@@ -202,11 +215,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = CreateOrderSerializer(
             data=request.data, 
-            context={'user_id': self.request.user.id}
+            context={'request': request}
             )
         
         serializer.is_valid(raise_exception=True)
-
         order = serializer.save()
         response_serializer = OrderSerializer(order)
         
@@ -218,28 +230,3 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
     queryset = OrderItem.objects.all()
 
-
-
-
-
-    # serializer_class = OrderSerializer
-    # permission_classes = [permissions.IsAuthenticated]
-
-    
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     if user.is_authenticated:
-    #         return Order.objects\
-    #         .filter(customer__user=user)\
-    #         .prefetch_related('services')\
-    #         .select_related('customer')
-    #     return Order.objects.none()
-    
-
-
-    # @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
-    # def complete(self, request, pk=None):
-    #     order = self.get_object()
-    #     order.status = 'COMPLETED'
-    #     order.save()
-    #     return Response({ 'status': 'Order marked as completed'})
