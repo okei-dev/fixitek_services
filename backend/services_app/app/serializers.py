@@ -16,6 +16,12 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'phone', 'user']
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description', 'photo_url']
+
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
@@ -25,12 +31,13 @@ class TagSerializer(serializers.ModelSerializer):
 class ServiceImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceImage
-        fields = ['id', 'image']
+        fields = ['id', 'image', 'is_primary']
 
 
 class ServiceSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     images = ServiceImageSerializer(many=True)
+    category = CategorySerializer()
     class Meta:
         model = Service
         fields = ['id', 'name', 'category', 'description', 'tags', 'price', 'estimated_time', 'images']
@@ -40,12 +47,6 @@ class SimpleServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ['id', 'name', 'price']
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'description', 'photo_url']
 
 
 class CartItemSerializer(serializers.ModelSerializer):

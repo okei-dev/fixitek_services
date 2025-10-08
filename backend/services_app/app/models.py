@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from uuid import uuid4
 from decimal import Decimal
+from PIL import Image
 
 
 class Customer(models.Model):
@@ -68,6 +69,19 @@ class ServiceImage(models.Model):
     service = models.ForeignKey(Service, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to="service_photos/", blank=True, null=True)
     is_primary = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            img = Image.open(self.image)
+
+            img.thumbnail((800, 800))
+            img.save(self.image.path, quality=85)
+        super().save(*args, **kwargs)
+
+    
+    def __str__(self):
+        return f"Image for service { self.service.name}"
+
 
 
 class Cart(models.Model):

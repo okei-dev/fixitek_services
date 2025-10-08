@@ -35,4 +35,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('', include(carts_router.urls)),
     path('', include(orders_router.urls)),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
+
+
