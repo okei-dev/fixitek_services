@@ -26,7 +26,7 @@ const About = () => {
     ]
     return (
         <section>
-            <ul className="mt-60 mx-4 border-b-2 border-[var(--neutral--300)]">
+            <ul className="mt-50 mx-4 border-b-2 border-[var(--neutral--300)]">
                 {contactUs.map((contact, index) => (
                     <li key={index}>
                         <div className="flex items-center gap-2">
@@ -55,9 +55,6 @@ const About = () => {
                     providing a seamless digital experience. With features like user
                     authentication, service tracking, carts, and dashboards, we’re making it
                     easier for you to focus on what matters most while we handle the rest.</p>
-                <p className="text-base p-2 leading-relaxed">We believe in **efficiency, transparency, and trust**. Fixitek Service
-                    continues to grow with the aim of becoming the go-to platform for
-                    everyday service needs.</p>
                 <Link
                     to="/about"
                     className="mt-6 inline-flex btn-secondary-small justify-center items-center gap-2 w-full"
