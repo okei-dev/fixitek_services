@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Category } from "@/types/category";
-import { Service } from "@/types/service";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GoArrowRight } from "react-icons/go";
 import CategoryIcon from "@/components/CategoryIcon";
-import { useService } from "../services/hooks/useService";
+
 
 interface Props {
   category: Category;
@@ -12,12 +11,8 @@ interface Props {
 
 const CategoryCard: React.FC<Props> = ({ category }) => {
 
-  const { services, loading, error } = useService(category.id);
-
-  const firstService = services[0];
- 
   return (
-    <li className="m-4 text-center bg-[var(--neutral--100)] shadow-lg rounded-3xl overflow-hidden">
+    <li className="m-4 text-center hover:text-[var(--neutral--100)] bg-[var(--neutral--100)] shadow-lg rounded-3xl overflow-hidden">
       <div className="relative flex justify-center">
         <img
           src={category.photo_url || "/img/furniture.jpg"}
@@ -29,22 +24,17 @@ const CategoryCard: React.FC<Props> = ({ category }) => {
         </div>
       </div>
       <div className="p-4">
-        <h3 className="font-bold text-[var(--neutral--800)] hover:text-[var(--accent--primary-1)]">
+        <h3 className="font-bold py-4 text-2xl text-[var(--neutral--800)] hover:text-[var(--accent--primary-1)]">
           {category.name}
         </h3>
-        <p className="text-sm text-gray-600">{category.description}</p>
+        <p className="">{category.description}</p>
 
-        {loading && <p className="text-xs text-gray-400">Loading service…</p>}
-        {error && <p className="text-xs text-red-500">{error}</p>}
-
-        {firstService && (
-          <Link
-            to={`/categories/${category.id}/services/${firstService.id}`}
-            className="flex justify-center items-center gap-2 text-sm text-[var(--secondary--color-2)] hover:text-[var(--accent--primary-1)] mt-2 p-3"
-          >
-            View Services <GoArrowRight />
-          </Link>
-        )}
+        <Link
+          to={`/categories/${category.id}/services/`}
+          className="flex justify-center items-center gap-2 text-sm text-[var(--secondary--color-2)] hover:text-[var(--accent--primary-1)] mt-2 p-3"
+        >
+          View Services <GoArrowRight />
+        </Link>
       </div>
     </li>
   );
