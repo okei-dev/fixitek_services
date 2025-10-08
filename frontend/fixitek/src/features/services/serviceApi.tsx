@@ -35,21 +35,7 @@ export const getServicesByCategory = async (categoryId: number): Promise<Service
         console.error('Failed to fetch services by category', error);
         throw error;
     }
-}
+};
 
-// export const getServiceDetails = async (
-//     categoryId: number,
-//     serviceId: number
-// ): Promise<Service> => {
-//     try {
-//         const res = await api.get<Service>(`/app/categories/${categoryId}/services/${serviceId}/`);
-//         console.log('category service: ', res.data);
-//         return res.data
-
-//     } catch (error) {
-//         console.error('Failed to load a service by category', error);
-//         throw error;
-//     }
-// }
 
 
