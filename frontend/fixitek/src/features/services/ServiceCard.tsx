@@ -1,31 +1,61 @@
 import React from 'react'
-import { useCart } from '../cart/cartContext'
+import { Service } from '@/types/service';
+import { ServiceImage } from '@/components/ServiceImage';
+import Button from '@/components/Button';
+import { Link } from 'react-router-dom';
 
 
-type Service = {
-    id: number
-    name: string
+interface Props {
+    service: Service;
 }
 
-const ServiceCard = ({ service }: { service: Service}) => {
-    const { addItem } = useCart();
 
-    const handleAdd = () => {
-        addItem({ service_id: service.id, quantity: 1})
-    }
+const ServiceCard: React.FC<Props> = ({ service }) => {
+    const { id, name, description, images } = service;
 
-    
-  return (
-    <div>
-        <h3 className='text-lg font-semibold'>{service.name}</h3>
-        <button
-        onClick={handleAdd}
-        className='mt-2 px-4 py-1 bg-blue-600 text-white rounded'
-        >
-            Add to Cart
-        </button>
-    </div>
-  )
+    return (
+        <li className='px-4 bg-[var(--neutral--100)] shadow-lg rounded-3xl overflow-hidden'>
+
+            <div>
+                <h3 className='text-2xl text-[var(--neutral--800)] py-3 font-bold'>{name}</h3>
+                <p> In Fixitek our <strong>{name}</strong> team, we have expert
+                    specializing in <span className='italic'>{description}</span>.
+                </p>
+            </div>
+
+            <div>
+                <ServiceImage 
+                    src={images?.[0]?.image} 
+                    alt={name || 'Service'}
+                    className='my-10'
+                     />
+            </div>
+
+            <div>
+                <h3 className='text-xl text-[var(--neutral--800)] py-2 font-semibold'>Never get anything wrong again with our services</h3>
+                <p>In our handyman team, we have expert in <strong>{name}</strong>
+                    for repairs, assembly, installation and maintenance. We are
+                    here to assist you.
+                </p>
+            </div>
+            <div>
+                <ServiceImage 
+                    src={images?.[1]?.image} 
+                    alt={name || 'Service'}
+                    className='my-10'
+                     />
+            </div>
+            <Button 
+                className='w-full mb-10'
+            >
+                <Link
+                    to='/'
+                    >
+                        Get a quote
+                    </Link>
+            </Button>
+        </li>
+    )
 }
 
 export default ServiceCard
