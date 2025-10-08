@@ -3,18 +3,22 @@ import { menuData } from './Header/menuData'
 import { Link } from 'react-router-dom'
 import CartItem from '@/features/cart/CartItem'
 import QuoteCard from './QuoteCard'
+import HandymanCard from './HandymanCard'
+import Button from './Button'
 
 const Footer = () => {
   return (
     <div className='relative mt-40 pt-70 flex flex-col text-[var(--neutral--100)] bg-[var(--secondary--color-1)]'>
-      <QuoteCard>
-        <Link
-          to='/about'
-          className='mt-8 btn-secondary-small text-center'
-        >
-          More about us
-        </Link>
-      </QuoteCard>
+
+      <div className='absolute -top-20'>
+        <HandymanCard
+      >
+        <Button
+          className='bg-none border-[var(--neutral--800)]'
+        >More about us</Button>
+      </HandymanCard>
+      </div>
+
       <h2 className='p-4 text-2xl font-semibold'>Menu</h2>
       {menuData.map((menu, idx) => (
         menu.subMenu ? menu.subMenu.map((sub, subIdx) => (
@@ -48,7 +52,7 @@ const Footer = () => {
       </div>
       <div className='px-4'>
         <img
-          src='./logo.png'
+          src='./img/logo.png'
           alt='Fixitek logo'
           className='w-32'
           />
