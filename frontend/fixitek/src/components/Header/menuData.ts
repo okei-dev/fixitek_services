@@ -3,6 +3,7 @@ export const menuData = [
   { name: "About", url: "/About" },
   { name: "Services", url: "/Services" },
   { name: "Contact", url: "/Contact" },
+  { name: "Dashboard", url: "/dashboard" },
   {
     name: "Pages", subMenu: [
       {
