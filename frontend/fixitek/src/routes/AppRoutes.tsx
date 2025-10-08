@@ -7,9 +7,9 @@ import Dashboard from '@/pages/Dashboard'
 import NotFound from '@/pages/NotFound'
 import CartPage from '@/pages/CartPage'
 import Layout from '@/Layout'
-import ServiceDetail from '@/features/services/ServiceDetail'
 import ServiceCategories from '@/features/services/ServiceCategories'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import ServiceList from '@/features/services/ServiceList'
 
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -26,8 +26,8 @@ const AppRoutes = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
-                <Route path='/categories/:categoryId/services' element={<ServiceCategories />} />
-                <Route path='/categories/:categoryId/services/:serviceId' element={<ServiceDetail />} />
+                <Route path='/categories/' element={<ServiceCategories />} />
+                <Route path='/categories/:categoryId/services/' element={<ServiceList />} />
 
                 <Route
                     path='/dashboard'
