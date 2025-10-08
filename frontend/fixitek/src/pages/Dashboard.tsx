@@ -5,7 +5,7 @@ import StatCard from '@/components/StatCard';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 
 const Dashboard = () => {
-    const { logout } = useAuth();
+    const { logout, isAuthenticated } = useAuth();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -20,6 +20,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchDashboard = async () => {
+            if (!isAuthenticated) return;
             try {
                 const [servicesRes, activeOrdersRes, pendingRes, recentRes] = await Promise.all([
                     api.get('/app/services/'),
