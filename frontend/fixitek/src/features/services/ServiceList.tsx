@@ -1,63 +1,56 @@
-import React, { useEffect, useState } from "react";
-import { getServicesByCategory } from "./serviceApi";
-import { GoArrowRight } from "react-icons/go";
-import { Link, useParams } from "react-router-dom";
-import { Service } from "@/types/service";
+import React from 'react'
+import { useService } from '@/hooks/useService'
+import ErrorDisplay from '@/components/ErrorDisplay';
+import CategoryIcon from '@/components/CategoryIcon';
+import ServiceCard from './ServiceCard';
+import { useParams } from 'react-router-dom';
+import { ServiceImage } from '@/components/ServiceImage';
 
 
 const ServiceList: React.FC = () => {
     const { categoryId } = useParams<{ categoryId: string }>();
-    const [services, setServices] = useState<Service[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const { services, loading, error } = useService(Number(categoryId));
 
-    const fetchServiceList = async () => {
-        if (!categoryId) return;
+    const category = services?.[0]?.category
 
-        const id = Number(categoryId);
-        if (isNaN(id)) return;
+    if (loading) return <p className='text-3xl text-center mt-8'>Loading...</p>
+    if (error) return <ErrorDisplay message={error} />
 
-        setLoading(true)
+  return (
+    <div className="mt-10 mx-4 flex flex-col items-center">
+        <div className='relative mt-2 mb-12'>
+            <ServiceImage
+                src={category?.photo_url}
+                alt={category?.name || 'Category'}
+            />
 
-        try {
-            const data = await getServicesByCategory(id);
-            setServices(data)
-        } catch (error) {
-            console.error('Failed to fetch services', error);
+            <div className='absolute inset-0 bg-[var(--neutral--800)]/60 z-10 rounded-xl flex items-center'>
+                <div className='p-4 text-[var(--neutral--100)]'>
+                    <h2 className='text-2xl font-semibold'>{category?.name}</h2>
+                    <p className=''>{category?.description}</p>
+                </div>
+            </div>
 
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        fetchServiceList()
-    }, [categoryId]);
-
-    if (loading) return <p>Loading services...</p>
-
-    return (
-        <div className="mt-10">
-            <ul className="mx-4 ">
-                {services.map((service) => (
-                    <li
-                        key={service.id}
-                        className='bg-[var(--secondary--color-3)] mb-2'
-                    >
-                        <h2 className='p-2 text-2xl'>{service.name}</h2>
-                        <p className='p-2 text-base'>{service.description}</p>
-                        <Link 
-                            to={`/services/${service.id}/`}
-                            className='btn-primary'
-                            >
-                            Get a quote
-                            <GoArrowRight />
-                        </Link>
-
-                    </li>
-                ))}
-            </ul>
+            {category?.id && (
+                <div className="absolute -bottom-10 left-35 rounded-full border-3 border-white p-4 bg-[var(--accent--primary-1)] z-20">
+                <CategoryIcon id={category?.id} />
+            </div>
+            )}
         </div>
-    )
+
+        <ul className='grid sm:grid-cols-2 lg:grid-cols-3 gap-10'>
+            {services.map((service) => {
+                return (<ServiceCard
+                    key={service.id}
+                    service={service}
+                    />
+                    );
+                })}
+
+        </ul>
+
+    </div>
+  )
 }
 
 export default ServiceList
