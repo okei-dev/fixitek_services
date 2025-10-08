@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { getAllServices, getServiceCategories } from "./serviceApi";
+import React from "react";
 import SectionButton from "@/components/SectionButton";
 import Button from "@/components/Button";
 import { GoArrowRight } from "react-icons/go";
 import CategoryCard from "@/features/category/CategoryCard";
-import { Category } from "@/types/category";
-import { Service } from "@/types/service";
-import { api } from "@/lib/api";
-import { useParams } from "react-router-dom";
-import { useService } from "./hooks/useService";
-import { useCategories } from "./hooks/useCategories";
+import { useCategories } from "@/hooks/useCategories";
+import ErrorDisplay from "@/components/ErrorDisplay";
+import QuoteCard from "@/components/QuoteCard";
+import { Link } from "react-router-dom";
 
 
 
 const ServiceCategories: React.FC = () => {
-  const { categoryId } = useParams<{ categoryId: string }>();
-  // const { service, loading: servLoading , error: servError } = useService(Number(categoryId));
   const { categories, loading: catLoading, error: catError } = useCategories();
 
-  // if (servLoading || catLoading) return <p className="text-center mt-8">Loading...</p>
-  // if (servError || catError) return <p className="text-center text-red-500">{catError || servError}</p>
+  const ctaUrl = "/about";
+  const ctaText = "Get a quote";
+
+  if (catLoading) return <p className="text-center mt-8">Loading...</p>
+  if (catError) return <ErrorDisplay message={catError} />
 
   return (
     <div className="mt-20 mx-4 flex flex-col items-center">
@@ -44,24 +42,26 @@ const ServiceCategories: React.FC = () => {
         <GoArrowRight />
       </Button>
 
-      <div className="mt-30 flex flex-col p-4 rounded-2xl bg-[var(--secondary--color-1)] staff-line-svg">
-        <h2 className="mt-4 p-4 text-3xl text-[var(--neutral--100)]">
-          Get a budget today for your
-          <span className="text-[var(--accent--primary-1)]"> new project</span>!
-        </h2>
-        <button className="my-4 btn-primary">
-          Get a quote
-          <GoArrowRight />
-        </button>
-        <div className="m-2 p-4 text-[var(--neutral--100)]">
-          <p className="text-sm">Call us</p>
-          <p className="font-semibold">(+1) 240 640-3500</p>
-        </div>
-        <div className="m-2 p-4 text-[var(--neutral--100)]">
-          <p className="text-sm">Email us</p>
-          <p className="font-semibold">contact@fixitek.com</p>
-        </div>
-      </div>
+     <div className="mt-10">
+        <QuoteCard
+          title="Contact our handyman team"
+          highlight="today!"
+        >
+          <Button>
+            <Link 
+              to={ctaUrl}
+              >
+                {ctaText}
+              </Link>
+          </Button>
+          <div className="mt-2 py-10 px-2 font-semibold text-[var(--neutral--100)]">
+            <p>Call Us</p>
+            <p>(+1) 240 640-3500</p>
+            <p className="mt-4">Email Us: </p>
+            <p>contact@fixitek.com</p>
+          </div>
+        </QuoteCard>
+     </div>
     </div>
   );
 };
