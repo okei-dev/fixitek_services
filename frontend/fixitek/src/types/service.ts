@@ -1,10 +1,15 @@
 import { Category } from '@/types/category'
 import { Tag } from '@/types/tag'
 
+export interface ServiceImage {
+    image: string;
+    is_primary: boolean;
+}
+
 export interface Service {
     id: number;
     name: string;
-    category: Category[];
+    category: Category;
     tags: Tag[];
 
     created_at: string;
@@ -14,6 +19,5 @@ export interface Service {
     estimated_time?: number;
     description: string;
 
-
-    photo?: string | null;
+    images?: ServiceImage[];
 }
