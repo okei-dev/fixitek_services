@@ -1,22 +1,39 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { GoArrowRight } from 'react-icons/go'
+import Button from './Button';
 
-interface HandymanCardProps {
-    children: React.ReactNode;
+
+interface Props {
+    title?: string;
+    ctaText?: string;
+    ctaUrl?: string;
+    className?: string;
+    children?: React.ReactNode;
 }
 
-const HandymanCard: React.FC<HandymanCardProps> = ({ children }) => {
+
+const HandymanCard: React.FC<Props> = ({ 
+    title="Contact our expert team today!",
+    ctaText="Get a quote",
+    ctaUrl="/about",
+    children,
+}) => {
     return (
-        <div className="absolute mx-4 flex flex-col justify-center py-10 px-8 rounded-2xl bg-[var(--accent--primary-1)]">
-            <h2 className="text-2xl text-center p-3 text-[var(--neutral--800)]">Contact our expert handyman today!</h2>
-            <Link
-                to="/about"
-                className="btn-tertiary-small inline-flex justify-center items-center gap-2"
+        <div className="m-4 py-10 px-6 flex flex-col rounded-2xl bg-[var(--accent--primary-1)]">
+            <h2 className="text-3xl text-center mb-4 px-3 text-[var(--neutral--800)]">{title}</h2>
+            
+            <Button
+                className="mb-4 bg-[var(--neutral--800)] text-white"
             >
-                <p>Get a quote</p>
-                <GoArrowRight />
-            </Link>
+                <Link
+                    to={ctaUrl}
+                    className='flex space-x-2'
+                >
+                    <p>{ctaText}</p>
+                    <GoArrowRight />
+                </Link>
+            </Button>
             {children}
         </div>
     )
