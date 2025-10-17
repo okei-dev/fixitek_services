@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
+from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from uuid import uuid4
@@ -57,14 +58,64 @@ class Service(models.Model):
             models.Index(fields=["name"]),
             models.Index(fields=["category"]),
         ]
-        ordering = ["name"]
+        ordering = ["id"]
         verbose_name = _("Service")
         verbose_name_plural = _("Services")
 
     def __str__(self):
         return self.name
 
+
+class ServiceType(models.Model):
+    TYPE_CHOICES = [
+        ('ASSEMBLY', 'Assembly'),
+        ('DISASSEMBLY', 'Disassembly'),
+        ('BOTH', 'Both'),
+        ('MOUNTING', 'Mounting'),
+        ('DISMOUNTING', 'Dismounting'),
+        ('INSTALLATION', 'Installation'),
+    ]
+
+    MOVING_CHOICES = [
+        ('YES', 'Yes'),
+        ('NO', 'No'),
+    ]
+
+    DISTANCE_CHOICES = [
+        ('LT10', 'Less than 10 FT'),
+        ('GT10', 'More than 10 FT'),
+    ]
+    service = models.ManyToManyField(Service, related_name='service_types')
+    service_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='ASSEMBLY')
+    need_moving = models.CharField(max_length=3, choices=MOVING_CHOICES, default='NO')
+    how_far = models.CharField(max_length=10, choices=DISTANCE_CHOICES, blank=True, null=True)
+    moving_price = models.DecimalField(max_digits=8, decimal_places=2, default=(Decimal('0.00')))
+    related_image = models.ImageField(upload_to="service_photos/related_photos/", blank=True, null=True)
+
+    class Meta:
+        ordering = ['service_type']
+        verbose_name = _('Service type')
+        verbose_name_plural = _('service types')
+
+
+    def __str__(self):
+        return f'{self.get_service_type_display()}'
+   
     
+    def clean(self):
+        if self.need_moving == 'YES' and not self.how_far:
+            raise ValidationError({ 'how_far must be specified if moving is needed.'})
+        if self.need_moving == 'YES':
+            if self.how_far == 'LT10':
+                self.moving_price = Decimal('10.00')
+            elif self.how_far == 'GT10':
+                self.moving_price = Decimal('25.00')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+
 class ServiceImage(models.Model):
     service = models.ForeignKey(Service, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to="service_photos/", blank=True, null=True)
