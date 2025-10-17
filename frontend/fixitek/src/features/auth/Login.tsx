@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ErrorDisplay from "@/components/ErrorDisplay";
 import InputField from "@/components/InputField";
-import Button from "@/components/Button";
+import Button from "@/components/Buttons/Button";
 import { useAuth } from "./hooks/useAuth";
 
 

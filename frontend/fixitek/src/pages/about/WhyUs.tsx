@@ -1,4 +1,4 @@
-import SectionButton from '@/components/SectionButton'
+import SectionButton from '@/components/Buttons/SectionButton'
 import React from 'react'
 import { SlEmotsmile, SlEnergy, SlLocationPin, SlWrench } from 'react-icons/sl'
 

@@ -10,6 +10,7 @@ import Layout from '@/Layout'
 import ServiceCategories from '@/features/services/ServiceCategories'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import ServiceList from '@/features/services/ServiceList'
+import ServiceDetail from '@/features/services/ServiceDetail'
 
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -28,6 +29,7 @@ const AppRoutes = () => {
                 <Route path='/register' element={<Register />} />
                 <Route path='/categories/' element={<ServiceCategories />} />
                 <Route path='/categories/:categoryId/services/' element={<ServiceList />} />
+                <Route path='/categories/:categoryId/services/:serviceId/' element={<ServiceDetail />} />
 
                 <Route
                     path='/dashboard'

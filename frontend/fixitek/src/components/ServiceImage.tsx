@@ -6,8 +6,8 @@ interface Props {
 
 export const ServiceImage: React.FC<Props> = ({ src, alt, className }) => (
     <img
-        src={src || '/img/fixitek_handyman.png'}
+        src={src || '/img/cover_image.png'}
         alt={alt}
-        className={`w-full aspect-square rounded-xl object-cover ${className}`}
+        className={`w-full aspect-auto rounded-xl object-cover ${className}`}
     />
 )

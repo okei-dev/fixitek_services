@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import CartItem from '@/features/cart/CartItem'
 import QuoteCard from './QuoteCard'
 import HandymanCard from './HandymanCard'
-import Button from './Button'
+import Button from './Buttons/Button'
 
 const Footer = () => {
   return (
@@ -12,11 +12,11 @@ const Footer = () => {
 
       <div className='absolute -top-20'>
         <HandymanCard
-      >
-        <Button
-          className='bg-none border-[var(--neutral--800)]'
-        >More about us</Button>
-      </HandymanCard>
+        >
+          <Button
+            className='bg-none border-[var(--neutral--800)]'
+          >More about us</Button>
+        </HandymanCard>
       </div>
 
       <h2 className='p-4 text-2xl font-semibold'>Menu</h2>
@@ -52,11 +52,11 @@ const Footer = () => {
       </div>
       <div className='px-4'>
         <img
-          src='./img/logo.png'
+          src='/img/logo.png'
           alt='Fixitek logo'
           className='w-32'
-          />
-          <p>Copyright &copy; Fixitek | All Rights Reserved</p>
+        />
+        <p>Copyright &copy; Fixitek | All Rights Reserved</p>
       </div>
     </div>
   )

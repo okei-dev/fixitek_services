@@ -1,6 +1,6 @@
 import React from "react";
-import SectionButton from "@/components/SectionButton";
-import Button from "@/components/Button";
+import SectionButton from "@/components/Buttons/SectionButton";
+import Button from "@/components/Buttons/Button";
 import { GoArrowRight } from "react-icons/go";
 import CategoryCard from "@/features/category/CategoryCard";
 import { useCategories } from "@/hooks/useCategories";
@@ -42,17 +42,17 @@ const ServiceCategories: React.FC = () => {
         <GoArrowRight />
       </Button>
 
-     <div className="mt-10">
+      <div className="mt-10">
         <QuoteCard
           title="Contact our handyman team"
           highlight="today!"
         >
           <Button>
-            <Link 
+            <Link
               to={ctaUrl}
-              >
-                {ctaText}
-              </Link>
+            >
+              {ctaText}
+            </Link>
           </Button>
           <div className="mt-2 py-10 px-2 font-semibold text-[var(--neutral--100)]">
             <p>Call Us</p>
@@ -61,7 +61,7 @@ const ServiceCategories: React.FC = () => {
             <p>contact@fixitek.com</p>
           </div>
         </QuoteCard>
-     </div>
+      </div>
     </div>
   );
 };

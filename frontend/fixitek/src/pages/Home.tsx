@@ -35,7 +35,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="relative mt-8 mx-4 staff-line-svg">
-            <img src="/img/fixitek_handyman.png" alt="Fixitek staff" />
+            <img src="/img/cover_image.png" alt="Fixitek staff" />
           </div>
           <div className='absolute -bottom-5/20'>
             <HandymanCard />

@@ -6,6 +6,16 @@ export interface ServiceImage {
     is_primary: boolean;
 }
 
+
+export interface ServiceType {
+    service_type: string;
+    need_moving: string;
+    how_far: string;
+    moving_price: string;
+    related_image: string;
+}
+
+
 export interface Service {
     id: number;
     name: string;
@@ -20,4 +30,5 @@ export interface Service {
     description: string;
 
     images?: ServiceImage[];
+    service_types?: ServiceType[];
 }

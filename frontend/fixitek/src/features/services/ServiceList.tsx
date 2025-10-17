@@ -12,6 +12,7 @@ const ServiceList: React.FC = () => {
     const { services, loading, error } = useService(Number(categoryId));
 
     const category = services?.[0]?.category
+    console.log('services: ', services)
 
     if (loading) return <p className='text-3xl text-center mt-8'>Loading...</p>
     if (error) return <ErrorDisplay message={error} />

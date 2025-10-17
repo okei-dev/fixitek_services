@@ -15,6 +15,16 @@ export const getAllServices = async () => {
 }
 
 
+export const getService = async (serviceId: number) => {
+    try {
+        const res = await api<Service>(`/app/services/${serviceId}/`);
+        return res.data;
+    } catch (error) {
+        console.error('Failed to fetch service.', error);
+        throw error;
+    }
+}
+
 export const getServiceCategories = async (): Promise<Category[]> => {
     try {
         const res = await api('/app/categories/');

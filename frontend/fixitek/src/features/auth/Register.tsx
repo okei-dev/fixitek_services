@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { fields } from '@/lib/fields';
 import InputField from '@/components/InputField';
 import ErrorDisplay from '@/components/ErrorDisplay';
-import Button from '@/components/Button';
+import Button from '@/components/Buttons/Button';
 import { useAuth } from './hooks/useAuth';
 
 

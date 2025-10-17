@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { SlEmotsmile, SlEnergy, SlLocationPin, SlWrench } from 'react-icons/sl'
 import { VscComment } from 'react-icons/vsc'
 import WhyUs from './WhyUs'
-import Button from '@/components/Button'
-import SectionButton from '@/components/SectionButton'
+import Button from '@/components/Buttons/Button'
+import SectionButton from '@/components/Buttons/SectionButton'
 
 
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Service } from '@/types/service';
 import { ServiceImage } from '@/components/ServiceImage';
-import Button from '@/components/Button';
-import { Link } from 'react-router-dom';
+import Button from '@/components/Buttons/Button';
+import { Link, useParams } from 'react-router-dom';
 
 
 interface Props {
@@ -11,7 +11,10 @@ interface Props {
 
 
 const ServiceCard: React.FC<Props> = ({ service }) => {
+    const { categoryId } = useParams<{ categoryId: string }>();
     const { id, name, description, images } = service;
+
+    const catId = Number(categoryId);
 
     return (
         <li className='px-4 bg-[var(--neutral--100)] shadow-lg rounded-3xl overflow-hidden'>
@@ -24,11 +27,11 @@ const ServiceCard: React.FC<Props> = ({ service }) => {
             </div>
 
             <div>
-                <ServiceImage 
-                    src={images?.[0]?.image} 
+                <ServiceImage
+                    src={images?.[0]?.image}
                     alt={name || 'Service'}
                     className='my-10'
-                     />
+                />
             </div>
 
             <div>
@@ -39,21 +42,19 @@ const ServiceCard: React.FC<Props> = ({ service }) => {
                 </p>
             </div>
             <div>
-                <ServiceImage 
-                    src={images?.[1]?.image} 
+                <ServiceImage
+                    src={images?.[1]?.image}
                     alt={name || 'Service'}
                     className='my-10'
-                     />
+                />
             </div>
-            <Button 
-                className='w-full mb-10'
+
+            <Link
+                to={`/categories/${catId}/services/${id}/`}
+                className='mb-10 btn-primary'
             >
-                <Link
-                    to='/'
-                    >
-                        Get a quote
-                    </Link>
-            </Button>
+                Get a quote
+            </Link>
         </li>
     )
 }
