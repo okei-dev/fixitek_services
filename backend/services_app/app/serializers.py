@@ -2,9 +2,19 @@ from django.db.models import Sum
 from django.db import transaction
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from user.serializers import UserSerializer
-from .models import Cart, CartItem, Category, Customer, OrderItem, Service, Order, ServiceImage, Tag
 from .signals import order_created
+from user.serializers import UserSerializer
+from .models import (Cart, 
+                     CartItem, 
+                     Category, 
+                     Customer, 
+                     OrderItem, 
+                     Service, 
+                     Order, 
+                     ServiceImage, 
+                     ServiceType, 
+                     Tag
+                     )
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -34,13 +44,20 @@ class ServiceImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'image', 'is_primary']
 
 
+class ServiceTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceType
+        fields = ['id', 'service_type', 'need_moving', 'how_far', 'moving_price', 'related_image']
+
+
 class ServiceSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     images = ServiceImageSerializer(many=True)
+    service_types = ServiceTypeSerializer(many=True)
     category = CategorySerializer()
     class Meta:
         model = Service
-        fields = ['id', 'name', 'category', 'description', 'tags', 'price', 'estimated_time', 'images']
+        fields = ['id', 'name', 'category', 'description', 'tags', 'price', 'estimated_time', 'images', 'service_types']
 
 
 class SimpleServiceSerializer(serializers.ModelSerializer):
