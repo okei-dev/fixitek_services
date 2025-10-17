@@ -30,3 +30,8 @@ class ServiceAdmin(admin.ModelAdmin):
 class ServiceImage(admin.ModelAdmin):
     list_display = ["image", "is_primary"]
 
+
+@admin.register(models.ServiceType)
+class ServiceType(admin.ModelAdmin):
+    list_display = ["service_type"]
+
