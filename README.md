@@ -111,7 +111,7 @@ Frontend runs at: **http://localhost:5173** (Vite default)
 ---
 
 ## Author
-@peter-muokwugwo
+@okei-muokwugwo
 
 ---
 
